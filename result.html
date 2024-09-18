@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="src/assets/logo.png" />
+    <title>Hasil Preview Data - DPD LPM Kota Bandung</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        overflow-x: hidden;
+      }
+      .container1 {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        padding: 20px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      #result {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 4px;
+        background-color: #fafafa;
+      }
+      .back-button {
+        background-color: #4caf50;
+        color: white;
+        border: 1px solid #4caf50;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      .back-button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container1">
+      <button class="back-button" onclick="window.history.back()">Kembali</button>
+      <div id="result"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const params = new URLSearchParams(window.location.search);
+        let resultHTML = "<h2>Preview Data:</h2>";
+
+        // Mapping untuk label formulir
+        const labels = {
+          nama: "Nama",
+          nik: "NIK",
+          noKartuKeluarga: "Nomor Kartu Keluarga",
+          alamat: "Alamat",
+          umur: "Umur",
+          jenisKelamin: "Jenis Kelamin",
+          rt: "RT",
+          rw: "RW",
+          penghasilanSebelumPandemi: "Penghasilan Sebelum Pandemi",
+          penghasilanSetelahPandemi: "Penghasilan Setelah Pandemi",
+          tanggalLahir: "Tanggal Lahir",
+          provinsi: "Provinsi",
+          kabupatenKota: "Kabupaten/Kota",
+          kecamatan: "Kecamatan",
+          kelurahanDesa: "Kelurahan/Desa",
+          alasanBantuan: "Alasan Bantuan",
+          alasanBantuanLainnya: "Alasan Bantuan Lainnya",
+        };
+
+        try {
+          // Memuat file JSON untuk mapping provinsi, kabupaten/kota, kecamatan, dan kelurahan
+          const provinsiResponse = await fetch("provinsiMapping.json");
+          const provinsiMapping = await provinsiResponse.json();
+          console.log("Provinsi Mapping:", provinsiMapping);
+
+          const kabupatenKotaResponse = await fetch("kabupatenmapping.json");
+          const kabupatenKotaMapping = await kabupatenKotaResponse.json();
+          console.log("Kabupaten/Kota Mapping:", kabupatenKotaMapping);
+
+          const kecamatanResponse = await fetch("kecamatanMapping.json");
+          const kecamatanMapping = await kecamatanResponse.json();
+          console.log("Kecamatan Mapping:", kecamatanMapping);
+
+          const kelurahanResponse = await fetch("kelurahanMapping.json");
+          const kelurahanMapping = await kelurahanResponse.json();
+          console.log("Kelurahan Mapping:", kelurahanMapping);
+
+          params.forEach((value, key) => {
+            let displayValue = value;
+
+            // Periksa jika kunci adalah untuk field yang memiliki ID
+            if (key === "provinsi" && provinsiMapping[value]) {
+              displayValue = provinsiMapping[value];
+            } else if (key === "kabupatenKota") {
+              const kabupatenKota = kabupatenKotaMapping.find((item) => item.id === value);
+              if (kabupatenKota) {
+                displayValue = kabupatenKota.name;
+              }
+            } else if (key === "kecamatan") {
+              const kecamatan = kecamatanMapping.find((item) => item.id === value);
+              if (kecamatan) {
+                displayValue = kecamatan.name;
+              }
+            } else if (key === "kelurahanDesa") {
+              const kelurahan = kelurahanMapping.find((item) => item.id === value);
+              if (kelurahan) {
+                displayValue = kelurahan.name;
+              }
+            } else if (key === "alasanBantuan" && value === "other") {
+              // Ambil nilai dari input khusus "alasanBantuanLainnya"
+              displayValue = params.get("alasanBantuanLainnya") || "Tidak ada data";
+            }
+
+            const label = labels[key] || key;
+
+            // Hapus bagian untuk fotoKTP dan fotoKK
+            if (key !== "fotoKTP" && key !== "fotoKK") {
+              resultHTML += `
+              <p>
+                <strong>${label}:</strong> ${displayValue}
+              </p>
+            `;
+            }
+          });
+
+          document.getElementById("result").innerHTML = resultHTML;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      });
+    </script>
+  </body>
+</html>

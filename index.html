@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulir Penerima Bantuan Sosial - DPD LPM Kota Bandung</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="src\assets\logo.png" />
+    <style>
+      #result {
+        margin-top: 20px;
+      }
+      .caption {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-top: 10px;
+      }
+      .header-img {
+        display: block;
+        max-width: 50%;
+        height: auto;
+        margin: 20px auto;
+      }
+      .headline {
+        text-align: center;
+        margin: 0 auto;
+      }
+      .headline img {
+        display: block;
+        margin: 0 auto 20px;
+      }
+      .headline h1 {
+        margin: 0 0 10px;
+      }
+      .headline .caption {
+        margin-top: 10px;
+        margin-bottom: 60px;
+        font-size: 16px;
+        color: #666;
+        line-height: 1.5;
+      }
+      .img-preview {
+        display: none;
+        max-width: 200px;
+        height: auto;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="headline">
+        <img src="src/assets/unnamed.png" alt="Header Image" class="header-img" />
+        <h1>Formulir Penerima Bantuan Sosial DPD LPM Kota Bandung</h1>
+        <p class="caption">
+          Lembaga Pemberdayaan Masyarakat Jawa Barat (LPM Jabar) mengundang Anda untuk mengisi formulir ini dengan daftar nama calon penerima Bantuan Sosial (Bansos). Partisipasi Anda membantu memastikan bantuan tepat sasaran dan mendukung
+          mereka yang membutuhkan.
+        </p>
+      </div>
+      <form id="bansosForm" action="result.html" method="POST">
+        <div class="form-group">
+          <label for="nama">Nama:</label>
+          <input type="text" id="nama" name="nama" required />
+        </div>
+        <div class="form-group">
+          <label for="nik">NIK:</label>
+          <input type="number" id="nik" name="nik" required />
+        </div>
+        <div class="form-group">
+          <label for="noKartuKeluarga">Nomor Kartu Keluarga:</label>
+          <input type="number" id="noKartuKeluarga" name="noKartuKeluarga" required />
+        </div>
+        <div class="form-group">
+          <label for="fotoKTP">Foto KTP:</label>
+          <input type="file" id="fotoKTP" name="fotoKTP" accept="image/jpeg, image/jpg, image/png, image/bmp" onchange="previewImage(this, 'previewKTP')" />
+          <small>Maksimal ukuran file 2MB. Hanya file JPEG, JPG, PNG, BMP yang diizinkan.</small>
+          <img id="previewKTP" class="img-preview" alt="Preview Foto KTP" />
+        </div>
+        <div class="form-group">
+          <label for="fotoKK">Foto KK:</label>
+          <input type="file" id="fotoKK" name="fotoKK" accept="image/jpeg, image/jpg, image/png, image/bmp" onchange="previewImage(this, 'previewKK')" />
+          <small>Maksimal ukuran file 2MB. Hanya file JPEG, JPG, PNG, BMP yang diizinkan.</small>
+          <img id="previewKK" class="img-preview" alt="Preview Foto KK" />
+        </div>
+        <!-- Elemen formulir lainnya di sini -->
+        <div class="form-group">
+          <label for="umur">Umur:</label>
+          <input type="number" id="umur" name="umur" min="25" required />
+          <small>Umur harus lebih atau sama dengan 25.</small>
+        </div>
+        <div class="form-group">
+          <label for="jenisKelamin">Jenis Kelamin:</label>
+          <select id="jenisKelamin" name="jenisKelamin" required>
+            <option value="" disabled selected>Pilih Jenis Kelamin</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="provinsi">Provinsi:</label>
+          <select id="provinsi" name="provinsi" required>
+            <option value="" disabled selected>Pilih Provinsi</option>
+
+            <!-- Data Provinsi  -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="kabupatenKota">Kabupaten/Kota:</label>
+          <select id="kabupatenKota" name="kabupatenKota" required>
+            <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+            <!-- Data Kabupaten/Kota  -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="kecamatan">Kecamatan:</label>
+          <select id="kecamatan" name="kecamatan" required>
+            <option value="" disabled selected>Pilih Kecamatan</option>
+            <!-- Data Kecamatan -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="kelurahanDesa">Kelurahan/Desa:</label>
+          <select id="kelurahanDesa" name="kelurahanDesa" required>
+            <option value="" disabled selected>Pilih Kelurahan/Desa</option>
+            <!-- Data Kelurahan/Desa -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="alamat">Alamat:</label>
+          <input type="text" id="alamat" name="alamat" maxlength="255" required />
+        </div>
+        <div class="form-group">
+          <label for="rt">RT:</label>
+          <input type="text" id="rt" name="rt" />
+        </div>
+        <div class="form-group">
+          <label for="rw">RW:</label>
+          <input type="text" id="rw" name="rw" />
+        </div>
+        <div class="form-group">
+          <label for="penghasilanSebelumPandemi">Penghasilan Sebelum Pandemi:</label>
+          <input type="text" id="penghasilanSebelumPandemi" name="penghasilanSebelumPandemi" oninput="formatCurrency(this)" />
+        </div>
+        <div class="form-group">
+          <label for="penghasilanSetelahPandemi">Penghasilan Setelah Pandemi:</label>
+          <input type="text" id="penghasilanSetelahPandemi" name="penghasilanSetelahPandemi" oninput="formatCurrency(this)" />
+        </div>
+        <div class="form-group">
+          <label for="alasanBantuan">Alasan Membutuhkan Bantuan:</label>
+          <select id="alasanBantuan" name="alasanBantuan" required>
+            <option value="" disabled selected>Pilih Alasan</option>
+            <option value="Kehilangan pekerjaan">Kehilangan pekerjaan</option>
+            <option value="Kepala keluarga">Kepala keluarga</option>
+            <option value="Tergolong fakir/miskin">Tergolong fakir/miskin</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+          <input type="text" id="alasanBantuanLainnya" name="alasanBantuanLainnya" placeholder="Jika Lainnya, sebutkan..." style="display: none" />
+        </div>
+        <div class="check">
+          <input type="checkbox" id="agreement" required />
+          <span class="checkbox-text"> Saya menyatakan bahwa data yang diisikan adalah benar dan siap mempertanggungjawabkan apabila ditemukan ketidaksesuaian dalam data tersebut. </span>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+      <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
