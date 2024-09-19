@@ -117,14 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const formData = new FormData(form);
-    const resultDiv = document.getElementById("result");
-
-    let resultHTML = "<h2>Data Formulir:</h2>";
-    formData.forEach((value, key) => {
-      resultHTML += `<p><strong>${key}:</strong> ${value}</p>`;
-    });
-
     resultDiv.innerHTML = resultHTML;
   });
 
@@ -216,37 +208,63 @@ function previewImage(input, previewId) {
   const file = input.files[0];
   const preview = document.getElementById(previewId);
 
-  // Validasi ukuran file
-  const maxFileSize = 2 * 1024 * 1024;
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/bmp"];
-
   if (file) {
+    // Validate file size
+    const maxFileSize = 2 * 1024 * 1024; // 2MB
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/bmp"];
+
     if (file.size > maxFileSize) {
       alert("Ukuran file terlalu besar. Maksimal 2MB.");
       input.value = "";
       preview.src = "";
-
+      preview.style.display = "none";
       return;
     }
 
-    // validasi tipe file
+    // Validate file type
     if (!allowedTypes.includes(file.type)) {
       alert("Tipe file tidak didukung. Hanya menerima jpeg, jpg, png, dan bmp.");
       input.value = "";
       preview.src = "";
       preview.style.display = "none";
-
       return;
     }
 
-    // image priview
+    // preview gambar dan resize
     const reader = new FileReader();
-
     reader.onload = function (e) {
-      preview.src = e.target.result;
-      preview.style.display = "block";
-    };
+      const img = new Image();
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const maxWidth = 300;
+        const maxHeight = 300;
+        let width = img.width;
+        let height = img.height;
 
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const resizedImage = canvas.toDataURL("image/jpeg");
+        preview.src = resizedImage;
+        preview.style.display = "block";
+        localStorage.setItem(previewId, resizedImage);
+      };
+      img.src = e.target.result;
+    };
     reader.readAsDataURL(file);
   } else {
     preview.src = "";

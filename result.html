@@ -137,6 +137,30 @@
             `;
             }
           });
+          const fotoKTP = localStorage.getItem("previewKTP");
+          const fotoKK = localStorage.getItem("previewKK");
+
+          if (fotoKTP) {
+            resultHTML += `
+        <div>
+          <p>
+            <strong>Foto KTP:</strong>
+            <p>
+            <img src="${fotoKTP}" class="img-preview" alt="Foto KTP" />
+        </div>
+        `;
+          }
+
+          if (fotoKK) {
+            resultHTML += `
+        <div>
+          <p>
+            <strong>Foto KK:
+              </strong><p>
+            <img src="${fotoKK}" class="img-preview" alt="Foto KK" />
+        </div>
+        `;
+          }
 
           document.getElementById("result").innerHTML = resultHTML;
         } catch (error) {
