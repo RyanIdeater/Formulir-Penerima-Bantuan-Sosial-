@@ -117,14 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const formData = new FormData(form);
-    const resultDiv = document.getElementById("result");
-
-    let resultHTML = "<h2>Data Formulir:</h2>";
-    formData.forEach((value, key) => {
-      resultHTML += `<p><strong>${key}:</strong> ${value}</p>`;
-    });
-
     resultDiv.innerHTML = resultHTML;
   });
 
